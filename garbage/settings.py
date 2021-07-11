@@ -1,4 +1,14 @@
+from os import environ
 from pathlib import Path
+
+
+def get_env(key, default=None):
+    val = environ.get(key, default)
+    if val == 'True':
+        val = True
+    elif val == 'False':
+        val = False
+    return val
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,15 +18,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mq^lj)_a11@tkxalu&5(uk(r4c!gy@kzrwkwsg#t0@(e&92n7!'
+SECRET_KEY =  get_env(
+    'SECRET_KEY', 'django-insecure-mq^lj)_a11@tkxalu&5(uk(r4c!gy@kzrwkwsg#t0@(e&92n7!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =  get_env('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS =  ['*']
 
 
-# Application definition
+# Application definitio n
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,12 +70,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'garbage.wsgi.application'
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': get_env('POSTGRES_DB', 'postgres_db'),
+        'USER': get_env('POSTGRES_USER', 'postgresuser'),
+        'PASSWORD': get_env('POSTGRES_PASSWORD', 'mysecretpass'),
+        'HOST': get_env('POSTGRES_HOST', 'localhost'),
+        'PORT': 5432
+    },
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -85,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = get_env('LANGUAGE_CODE', 'en-us')
 
-TIME_ZONE = 'Asia/Novokuznetsk'
+TIME_ZONE = get_env('TIME_ZONE', 'UTC')
 
 USE_I18N = True
 
@@ -100,8 +123,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = Path.joinpath(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format':
+            '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': get_env('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}
