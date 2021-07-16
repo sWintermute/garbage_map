@@ -36,7 +36,7 @@ class Command(BaseCommand):
                         ap.unit = None
 
                     else:
-                        ap.unit = unit
+                        ap.unit = Unit.objects.get(n_mt=fields[7])
 
                 ap.save()                
                 
