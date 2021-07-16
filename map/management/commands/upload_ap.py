@@ -31,8 +31,11 @@ class Command(BaseCommand):
                     
                     ap.unit = None
                 else:   
-                    unit = Unit.objects.get(n_mt=fields[7])
-                    ap.unit = unit
+                    unit = Unit.objects.filter(n_mt=fields[7])
+                    if len(unit) == 0:
+                        ap.unit = unit
+                    else:
+                        ap.unit = None
                 ap.save()                
                 
 
