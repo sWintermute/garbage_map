@@ -23,7 +23,7 @@ def unit(request, n_mt):
         # Unit marker add to map
         folium.CircleMarker(location=[unit.lat, unit.lon],
                             radius=10,
-                            popup="№"+str(unit.n_mt),
+                            popup="#"+str(unit.n_mt),
                             color="#097969",
                             fill=True,
                             fill_color="#3186cc",
@@ -43,7 +43,7 @@ def unit(request, n_mt):
 
         figure.render()
 
-        context = {"map": figure, "address": unit.address, "n_mt": unit.n_mt}
+        context = {"map": figure, "address": str(unit.street) + ", " + str(unit.building), "n_mt": unit.n_mt}
         return render(request, 'map/unit.html', context)
 
     # If unit not exists
@@ -61,7 +61,7 @@ def unit(request, n_mt):
     # Unit marker add to map
     folium.CircleMarker(location=[unit.lat, unit.lon],
                         radius=10,
-                        popup="№"+str(unit.n_mt),
+                        popup="#"+str(unit.n_mt),
                         color="#097969",
                         fill=True,
                         fill_color="#3186cc",
@@ -81,7 +81,7 @@ def unit(request, n_mt):
 
     figure.render()
 
-    context = {"map": figure, "address": unit.address, "n_mt": unit.n_mt}
+    context = {"map": figure, "address": str(unit.street) + ", " + str(unit.building), "n_mt": unit.n_mt}
     return render(request, 'map/unit.html', context)
 
 def clear_map(request):
@@ -105,7 +105,7 @@ def clear_map(request):
         # Unit marker add to map
         folium.CircleMarker(location=[unit.lat, unit.lon],
                             radius=10,
-                            popup="№"+str(unit.n_mt),
+                            popup="#"+str(unit.n_mt),
                             color="#097969",
                             fill=True,
                             fill_color="#3186cc",
@@ -125,7 +125,7 @@ def clear_map(request):
 
         figure.render()
 
-        context = {"map": figure, "address": unit.address, "n_mt": unit.n_mt}
+        context = {"map": figure, "address": unit.street, "n_mt": unit.n_mt}
         return render(request, 'map/unit.html', context)
 
     figure = folium.Figure()
