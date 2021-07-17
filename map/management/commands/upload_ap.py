@@ -1,3 +1,4 @@
+from map.views import unit
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models.fields import NullBooleanField
 from map.models import Unit, Customer
@@ -27,8 +28,12 @@ class Command(BaseCommand):
                 ap.street = fields[4] + " " +  fields[3]
                 ap.building = fields[5]
                 ap.corpus = fields[6]
-                if not fields[7]:
-                    
+                if not fields[7]:                    
+                    ap.unit = None
+                try:
+                    cp = Unit.objects.get(n_mt=int(fields[7]))
+                    ap.unit = cp
+                except:
                     ap.unit = None
                 else:   
                     unit = Unit.objects.filter(n_mt=fields[7])
