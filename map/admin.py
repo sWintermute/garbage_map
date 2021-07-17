@@ -5,9 +5,9 @@ from .models import Customer
 from .models import Unit
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('district', 'street', 'corpus', 'n_mt')
+    list_display = ('district', 'address', 'n_mt')
     list_display_links = ('n_mt',)
-    search_fields = ('n_mt', 'district','street')
+    search_fields = ('n_mt', 'district','address')
 
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('district', 'street', 'building', 'corpus', 'unit')
