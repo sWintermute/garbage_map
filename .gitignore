@@ -7,3 +7,5 @@ __pycache__
 .env
 /**/static/*
 !**/.gitkeep
+ap_data.xlsx
+cp_data.xlsx
