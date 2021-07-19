@@ -43,7 +43,7 @@ def unit(request, n_mt):
 
         figure.render()
 
-        context = {"map": figure, "address": str(unit.address) + ", " + str(unit.building), "n_mt": unit.n_mt}
+        context = {"map": figure, "address": str(unit.address), "n_mt": unit.n_mt}
         return render(request, 'map/unit.html', context)
 
     # If unit not exists
