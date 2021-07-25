@@ -7,7 +7,6 @@ from django.http import HttpResponse
 
 def district_all(request, district):
     units = Unit.objects.filter(district=district)
-    print(len(units), "#################################################################################################################################")
     
     figure = folium.Figure()
     map = folium.Map(location=[53.761683, 87.125225], zoom_start=13)
