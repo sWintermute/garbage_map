@@ -18,8 +18,9 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ("district", "street", "building", "corpus", "unit")
     list_display_links = ("unit",)
     search_fields = ("unit__n_mt",)
-    autocomplete_fields = ['unit',]
-
+    autocomplete_fields = [
+        "unit",
+    ]
 
 
 admin.site.register(Customer, CustomerAdmin)
