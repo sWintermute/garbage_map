@@ -1,11 +1,13 @@
 FROM alpine:3.12 AS build
 ENV PYTHONUNBUFFERED 1
 ENV SETUPTOOLS_USE_DISTUTILS stdlib
+
 RUN mkdir -p /app
 RUN apk add --no-cache python3 py3-pip postgresql-libs py3-wheel
-RUN apk add --no-cache py3-numpy==1.21.0-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+RUN apk add --no-cache py3-numpy --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi
 RUN apk add --no-cache --virtual .build-deps postgresql-dev python3-dev build-base
+
 WORKDIR /app
 COPY requirements.txt .
 
