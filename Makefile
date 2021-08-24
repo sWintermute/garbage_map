@@ -28,3 +28,6 @@ logs:
 	docker-compose logs -f
 volumes:
 	docker volume create oort_db_data
+clear:
+	make down
+	docker volume rm oort_db_data
