@@ -14,6 +14,7 @@ class UnitAdmin(admin.ModelAdmin):
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ("district", "street", "building", "corpus", "unit")
     list_display_links = ("unit",)
+    search_fields = ("unit__n_mt",)
 
 
 admin.site.register(Customer, CustomerAdmin)
