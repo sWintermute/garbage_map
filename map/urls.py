@@ -6,5 +6,5 @@ from .views import district_all, unit, clear_map
 urlpatterns = [
     path('district/<str:district>', district_all),
     path('<int:n_mt>', unit),
-    path("", clear_map),
+    path("/map", clear_map),
 ]
