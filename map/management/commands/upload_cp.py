@@ -3,7 +3,8 @@ from django.db.models.fields import NullBooleanField
 from map.models import Unit, Customer
 
 from openpyxl import load_workbook
-import os
+from decimal import Decimal
+
 
 class Command(BaseCommand):
     help = "Загрузка КП"
@@ -12,21 +13,16 @@ class Command(BaseCommand):
         parser.add_argument('file', type=str)
         
     def handle(self, *args, **options):
-        wb = load_workbook(filename=options['file']).worksheets[0]
-        
+        wb = load_workbook(filename=options['file']).worksheets[6]
         for row in wb:
-            fields = []
-            for i in range(0,5):
-                fields.append(row[i].value)
-                print(i, row[i].value)
-           
             cp = Unit()
-            cp.n_mt = fields[0]
-            cp.address = fields[1]
-     
-            cp.lat = float(fields[2])
-            cp.lon = float(fields[3])
-            cp.district = fields[4]
-            cp.save()                
-                
+            try:
+                cp.n_mt = int(row[0].value)
+                cp.address = row[2].value
+                cp.lat = Decimal(row[3].value)
+                cp.lon = Decimal(row[4].value)
+                cp.district = row[8].value
+                cp.save()
+            except:
+                continue                
 

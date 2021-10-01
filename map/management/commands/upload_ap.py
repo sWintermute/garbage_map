@@ -4,7 +4,7 @@ from django.db.models.fields import NullBooleanField
 from map.models import Unit, Customer
 
 from openpyxl import load_workbook
-import os
+from decimal import Decimal
 
 class Command(BaseCommand):
     help = "Загрузка Клиентов"
@@ -15,34 +15,26 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         wb = load_workbook(filename=options['file']).worksheets[0]
         for row in wb:
-            fields = []
-            for i in range(0,8):
-                fields.append(row[i].value)
-            if not fields[1] or  not fields[2]:
-                continue               
-            else:
+            try:
                 ap = Customer()
-                ap.district = fields[0]
-                ap.lat = float(fields[1])
-                ap.lon = float(fields[2])
-                ap.street = fields[4] + " " +  fields[3]
-                ap.building = fields[5]
-                ap.corpus = fields[6]
-                if not fields[7]:                    
+                ap.district = row[2].value  # Район города
+                ap.street = row[6].value + " " + row[5].value # Параметр + Улица
+                ap.building = int(row[7].value) # Номер дома                
+                ap.corpus = row[8].value # Корпус
+                if not row[3].value and row[4].value:
+                    continue
+                else:
+                    ap.lat = Decimal(row[3].value)
+                    ap.lon = Decimal(row[4].value)
+                if not row[10].value:
                     ap.unit = None
                 try:
-                    cp = Unit.objects.get(n_mt=int(fields[7]))
+                    cp = Unit.objects.get(n_mt=int(row[10].value))
                     ap.unit = cp
                 except:
                     ap.unit = None
-                else:   
-                    unit = Unit.objects.filter(n_mt=fields[7])
-                    if len(unit) == 0:
-                        ap.unit = None
+                ap.save()
+            except:
+                continue                
 
-                    else:
-                        ap.unit = Unit.objects.get(n_mt=fields[7])
-
-                ap.save()                
-                
 
