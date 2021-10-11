@@ -191,5 +191,5 @@ def clear_map(request):
 
     figure.render()
 
-    context = {"map": figure, "address": "г.Новокузнецк", "n_mt": "garbage app"}
+    context = {"map": figure, "address": "г.Новокузнецк", "n_mt": "backend app"}
     return render(request, "map/unit.html", context)
