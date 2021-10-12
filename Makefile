@@ -2,7 +2,7 @@
 
 include .env
 
-SHELL = /bin/bash
+SHELL = /bin/sh
 CURRENT_UID := $(shell id -u):$(shell id -g)
 
 export CURRENT_UID
