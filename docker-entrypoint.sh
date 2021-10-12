@@ -42,7 +42,7 @@ echo >&2 "Collect static..."
 python3 manage.py collectstatic --noinput
 
 echo >&2 "Starting prod server..."
-exec python3 -m uvicorn garbage.asgi:application \
+exec python3 -m uvicorn backend.asgi:application \
         --host 0.0.0.0 \
         --port 8000 \
         --access-log \
