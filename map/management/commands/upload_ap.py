@@ -20,7 +20,7 @@ class Command(BaseCommand):
                 ap.district = row[2].value  # Район города
                 ap.street = row[6].value + " " + row[5].value # Параметр + Улица
                 ap.building = int(row[7].value) # Номер дома                
-                ap.corpus = row[8].value # Корпус
+                ap.postfix = row[8].value # Корпус
                 if not row[3].value and row[4].value:
                     continue
                 else:

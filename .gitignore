@@ -12,3 +12,4 @@ cp_data.xlsx
 db.sqlite3
 /map/migrations
 file.xlsx
+db.json

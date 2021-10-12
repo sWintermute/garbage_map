@@ -9,15 +9,15 @@ from django import forms
 
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ("district", "address", "n_mt")
+    list_display = ("municipalDistrict", "cityDistrict", "city", "address", "n_mt")
     list_display_links = ("n_mt",)
-    search_fields = ("n_mt", "district", "address")
+    search_fields = ("municipalDistrict", "cityDistrict", "city", "address", "n_mt")
 
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ("id","district", "street", "building", "corpus", "unit")
+    list_display = ("id","municipalDistrict", "city", "district", "prefix", "street", "building", "postfix", "unit")
     list_display_links = ("id","unit",)
-    search_fields = ("unit__n_mt", "street", "district")
+    search_fields = ("unit__n_mt", "municipalDistrict", "city", "district", "prefix", "street", "building", "postfix")
     autocomplete_fields = [
         "unit",
     ]
