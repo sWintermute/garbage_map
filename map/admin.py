@@ -15,9 +15,9 @@ class UnitAdmin(admin.ModelAdmin):
 
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ("id","municipalDistrict", "city", "district", "prefix", "street", "building", "postfix", "unit")
+    list_display = ("id","municipalDistrict", "city", "cityDistrict", "prefix", "street", "building", "postfix", "unit")
     list_display_links = ("id","unit",)
-    search_fields = ("unit__n_mt", "municipalDistrict", "city", "district", "prefix", "street", "building", "postfix")
+    search_fields = ("unit__n_mt", "municipalDistrict", "city", "cityDistrict", "prefix", "street", "building", "postfix")
     autocomplete_fields = [
         "unit",
     ]

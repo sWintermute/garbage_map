@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.deletion import DO_NOTHING
 
-
+# КП
 class Unit(models.Model):
     lat = models.DecimalField(max_digits=9, decimal_places=6, verbose_name="Широта")
     lon = models.DecimalField(max_digits=9, decimal_places=6, verbose_name="Долгота")
@@ -17,18 +17,19 @@ class Unit(models.Model):
     cityDistrict = models.CharField(
         verbose_name="Городской округ", max_length=100, blank=True, null=True
     )
-    city = models.CharField(verbose_name="Населенный пункт", max_length=100, blank=True, null=True)
-
+    city = models.CharField(
+        verbose_name="Населенный пункт", max_length=100, blank=True, null=True
+    )
 
     def __str__(self):
-        return str(self.address) + " | " + "#" + str(self.n_mt)
+        return str(self.address) + " | " + str(self.n_mt)
 
     class Meta:
         verbose_name_plural = "Контейнерные площадки"
         verbose_name = "Контейнерная площадка"
         ordering = ["n_mt", "address", "municipalDistrict", "cityDistrict", "city"]
 
-
+# Жилой фонд
 class Customer(models.Model):
     lat = models.DecimalField(max_digits=9, decimal_places=6, verbose_name="Широта")
     lon = models.DecimalField(max_digits=9, decimal_places=6, verbose_name="Долгота")
@@ -41,13 +42,20 @@ class Customer(models.Model):
         blank=True,
         null=True,
     )
+
+    # МО <- Город <- Район города
     municipalDistrict = models.CharField(
         verbose_name="МО", max_length=100, blank=True, null=True
-    )
-    city = models.CharField(verbose_name="НП", max_length=100, blank=True, null=True)
-    district = models.CharField(
+    )  # A
+
+    city = models.CharField(
+        verbose_name="НП", max_length=100, blank=True, null=True
+    )  # B
+    cityDistrict = models.CharField(
         verbose_name="Район города", max_length=100, blank=True, null=True
-    )
+    )  # C
+
+    # ул./пер.+ Название улицы + ,Номер дома + крп/литера/дробь
     prefix = models.CharField(
         verbose_name="Параметр", max_length=100, blank=True, null=True
     )
