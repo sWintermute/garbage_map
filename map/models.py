@@ -62,7 +62,7 @@ class Customer(models.Model):
     street = models.CharField(
         verbose_name="Адрес", max_length=100, blank=True, null=True
     )
-    building = models.IntegerField(verbose_name="Дом", blank=True, null=True)
+    building = models.CharField(max_length=100, verbose_name="Дом", blank=True, null=True)
     postfix = models.CharField(
         verbose_name="Корпус", max_length=3, blank=True, null=True
     )

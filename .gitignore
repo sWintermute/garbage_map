@@ -13,3 +13,6 @@ db.sqlite3
 /map/migrations
 file.xlsx
 db.json
+errorLog_ap_lat_lon.txt
+errorLog_ap.txt
+_data.xlsx
