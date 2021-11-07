@@ -4,9 +4,9 @@ from django.shortcuts import render
 import folium
 from django.http import HttpResponse
 
-
-def district_all(request, district):
-    units = Unit.objects.filter(district=district)
+# Выбор по МО
+def municipal_all(request, municipalDistrict):
+    units = Unit.objects.filter(municipalDistrict=municipalDistrict)
 
     figure = folium.Figure()
     map = folium.Map(location=[53.761683, 87.125225], zoom_start=8)
@@ -41,10 +41,90 @@ def district_all(request, district):
 
     figure.render()
 
-    context = {"map": figure, "district": district}
-    return render(request, "map/district.html", context)
+    context = {"map": figure, "geodata": municipalDistrict}
+    return render(request, "map/map.html", context)
 
+# Выбор по городу
+def city_all(request, city):
+    units = Unit.objects.filter(city=city)
 
+    figure = folium.Figure()
+    map = folium.Map(location=[53.761683, 87.125225], zoom_start=8)
+    map.add_to(figure)
+
+    for unit in units:
+        # Unit marker add to map
+        folium.CircleMarker(
+            location=[unit.lat, unit.lon],
+            radius=10,
+            popup="#" + str(unit.n_mt),
+            color="#097969",
+            fill=True,
+            fill_color="#3186cc",
+        ).add_to(map)
+
+        customers = Customer.objects.filter(unit=unit)
+        # Customer marker's and path add to map
+        for customer in customers:
+            folium.CircleMarker(
+                location=[customer.lat, customer.lon],
+                radius=10,
+                popup=customer.street + ", " + str(customer.building),
+                color="#FF5733",
+                fill=True,
+                fill_color="#3186cc",
+            ).add_to(map)
+            # Draw path
+            folium.PolyLine(
+                [[customer.lat, customer.lon], [unit.lat, unit.lon]]
+            ).add_to(map)
+
+    figure.render()
+
+    context = {"map": figure, "geodata": city}
+    return render(request, "map/map.html", context)
+
+# Выбор по району
+def district_all(request, cityDistrict):
+    units = Unit.objects.filter(cityDistrict=cityDistrict)
+
+    figure = folium.Figure()
+    map = folium.Map(location=[53.761683, 87.125225], zoom_start=8)
+    map.add_to(figure)
+
+    for unit in units:
+        # Unit marker add to map
+        folium.CircleMarker(
+            location=[unit.lat, unit.lon],
+            radius=10,
+            popup="#" + str(unit.n_mt),
+            color="#097969",
+            fill=True,
+            fill_color="#3186cc",
+        ).add_to(map)
+
+        customers = Customer.objects.filter(unit=unit)
+        # Customer marker's and path add to map
+        for customer in customers:
+            folium.CircleMarker(
+                location=[customer.lat, customer.lon],
+                radius=10,
+                popup=customer.street + ", " + str(customer.building),
+                color="#FF5733",
+                fill=True,
+                fill_color="#3186cc",
+            ).add_to(map)
+            # Draw path
+            folium.PolyLine(
+                [[customer.lat, customer.lon], [unit.lat, unit.lon]]
+            ).add_to(map)
+
+    figure.render()
+
+    context = {"map": figure, "geodata": cityDistrict}
+    return render(request, "map/map.html", context)
+
+# Выбор объекта по номеру в МТ
 def unit(request, n_mt):
     val = request.GET.get("q")
     if val:
@@ -135,7 +215,7 @@ def unit(request, n_mt):
     context = {"map": figure, "address": str(unit.address), "n_mt": unit.n_mt}
     return render(request, "map/unit.html", context)
 
-
+# Пустая карта
 def clear_map(request):
     val = request.GET.get("q")
     if val:
